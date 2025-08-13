@@ -1,37 +1,22 @@
 #!/bin/bash
 
 echo "Updating system"
+sudo dnf update -y
 
-sudo dnf update 
-
-echo " installing httpd"
-
+echo "Installing httpd"
 sudo dnf install -y httpd
 
-echo " starting and enable httpd "
-
+echo "Starting and enabling httpd"
 sudo systemctl start httpd
-
 sudo systemctl enable httpd
 
+# Configuring firewall to allow httpd
+sudo firewall-cmd --permanent --add-service=http
+sudo firewall-cmd --permanent --add-service=https
+sudo firewall-cmd --reload
 
+# Creating a webpage content
+echo "Welcome to Ajith's webserver" | sudo tee /var/www/html/index.html
 
-# configuring firewall to allow httpd
-
-firewall-cmd  --permenent-add-service =http
-
-firewall-cmd  --permenent-add-service =https
-
-
-
-#creating a webpage content 
-
-echo " Wellcome to Ajith's webserver" >> /var/www/html/index.html
-
-
-
-#Testing webserver 
-
-curl -l http://localhost
-
-
+# Testing webserver
+curl -L http://localhost
