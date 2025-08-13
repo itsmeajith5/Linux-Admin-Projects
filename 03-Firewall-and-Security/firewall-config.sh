@@ -1,31 +1,26 @@
 #!/bin/bash
 
-echo "installing firewalld"
+echo "Installing firewalld"
 sudo dnf install -y firewalld
 
-echo "starting and enable httpd"
-systemctl start httpd
-systemctl enable httpd
+echo "Installing httpd"
+sudo dnf install -y httpd
 
-echo "configuring firewall to allow only HTTP,HTTPD and SSH"
-firewall-cmd --permanent --remove-service=ftp
-firewall-cmd --permanent --remove-service=samba
-firewall-cmd --permanent --remove-service=telnet
+echo "Starting and enabling httpd"
+sudo systemctl start httpd
+sudo systemctl enable httpd
 
-firewall-cmd --permanent --add-service=http
-firewall-cmd --permanent --add-service=https
-firewall-cmd --permanent --add-service=ssh
+echo "Configuring firewall to allow only HTTP, HTTPS, and SSH"
+sudo firewall-cmd --permanent --remove-service=ftp
+sudo firewall-cmd --permanent --remove-service=samba
+sudo firewall-cmd --permanent --remove-service=telnet
 
-firewall-cmd --reload
+sudo firewall-cmd --permanent --add-service=http
+sudo firewall-cmd --permanent --add-service=https
+sudo firewall-cmd --permanent --add-service=ssh
 
-echo "allowing custom port 8080"
-firewall-cmd --permanent --add-port=8080/tcp
-firewall-cmd --reload
+echo "Allowing custom port 8080"
+sudo firewall-cmd --permanent --add-port=8080/tcp
 
-
-
-
-
-
-
-
+echo "Reloading firewall to apply changes"
+sudo firewall-cmd --reload
