@@ -1,16 +1,17 @@
 #!/bin/bash
-BACKUP_LOC="/home/ajith/Music"
-BACKUP_DEST="/backup"
 
-# Ensure backup directory exists
-mkdir -p "$BACKUP_DEST"
+if [ $# -ne 2 ];
+then
+	echo " please enter source dir and dest dir"
+fi
+if
+! command -v rsync >> /dev/null 2>&1;
+then
+	echo "rsync is not installed"
+        exit 1
+fi
 
-# Create backup with properly formatted date
-tar -cvzf "$BACKUP_DEST/backup_$(date +"%Y-%m-%d_%H-%M-%S").tar.gz" "$BACKUP_LOC"
+cur_date=$(date +%Y-%m-%d)
+rsync_opt=" -avb --backup-dir $2/$cur_date --delete"
 
-
-# Remove backups older than 7 days
-find "$BACKUP_DEST" -type f -name "*.tar.gz" -mtime +7 -exec rm {} \;
-
-# ADD THIS LINE TO CRONTAB >> /tmp/script.log 2>&1 TO REDIRECT ERROR  OR OUTPUT LOG TO A FILE
-
+$(which rsync) $rsync_opt "$1" "$2/current" >> backup_$cur_date.log
