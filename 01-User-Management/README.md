@@ -1,13 +1,13 @@
-# 👤 User Creation Script
+# User Creation Script
 
 This script automates the process of creating a new Linux user, seting a password.
 
-## 🚀 Features
+##  Features
 
 - Create a new user
 - Print success message
 
-## 📦 Requirements
+##  Requirements
 
 - Linux system
 - Root or sudo privileges
