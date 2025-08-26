@@ -1,15 +1,16 @@
 #!/bin/bash
-# Simple Disk Monitor - All Partitions
 
-threshold=80
+THRESHOLD=80
 
-df -hP | grep -vE '^Filesystem|tmpfs|overlay' | while read line; do
-    usage=$(echo $line | awk '{print $5}' | sed 's/%//')
-    partition=$(echo $line | awk '{print $6}')
+echo "Checking disk usage..."
 
-    if [ $usage -ge $threshold ]; then
-        echo "Warning: $partition is ${usage}% full!"
+for usage in $(df -h --output=pcent,target | tail -n +2); do
+    percent=$(echo $usage | cut -d% -f1)
+    mount=$(echo $usage | awk '{print $2}')
+    
+    if [ "$percent" -ge "$THRESHOLD" ]; then
+        echo "⚠️  $mount is ${percent}% full!"
     else
-        echo "OK: $partition is ${usage}% used."
+        echo "✅ $mount is OK (${percent}%)"
     fi
 done
