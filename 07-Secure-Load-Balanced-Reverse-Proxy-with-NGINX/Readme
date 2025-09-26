@@ -1,0 +1,83 @@
+Project: Secure Load-Balanced Reverse Proxy with NGINX
+Project Goal
+
+Host multiple backend applications (App1, App2)
+
+Use NGINX as a reverse proxy + load balancer
+
+Secure the app with HTTPS (self-signed certificate)
+
+-----------------------------------------------------
+STEP 1
+-------
+INSTALL NGNIX. START AND ENABLE
+sudo dnf update
+sudo dnf install -y nginx
+
+systemctl start nginx
+systemctl enable nginx
+
+STEP 2
+-------
+set to act as load balancer 
+#config file loc : /etc/nginx/nginx.conf
+#must add under http block
+
+upstream backend_app {
+    server 127.0.0.1:3001;
+    server 127.0.0.1:3002;
+}
+
+server {
+    listen 80;
+    server_name localhost;
+
+    location / {
+        proxy_pass http://backend_app;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+
+--------------- sysntax check : nginx -t and   ----  reload nginx -------------
+
+STEP 3
+------------
+enable SSL
+##must add under http block
+
+#Generate SSL Certificate and Key
+#folder is not avilable create it by mkdir -p /etc/ssl/private
+-------
+sudo openssl req -x509 -nodes -days 365 \
+ -newkey rsa:2048 \
+ -keyout /etc/ssl/private/nginx-selfsigned.key \
+ -out /etc/ssl/certs/nginx-selfsigned.crt
+
+--------------- sysntax check : nginx -t and   ----  reload nginx -------------
+
+STEP 4
+--------
+create backend nodjs app and run it 
+----server1------
+require('http').createServer((req, res) => {
+res.end('Response from Server 1');
+}).listen(3001);
+
+-----server 2--------
+require('http').createServer((req, res) => {
+res.end('Response from Server 2');
+}).listen(3002);
+
+--------------------
+#TO RUN
+node server1.js &
+node server2.js &
+
+
+CHECK
+----------
+curl -k https://localhost
+
+
+
