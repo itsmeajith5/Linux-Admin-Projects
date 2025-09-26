@@ -79,7 +79,7 @@ server {
     ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;
 
     location / {
-        proxy_pass http://localhost:3000;
+        proxy_pass http://backend_app;    #must change localhost to backend app. To use loadbal and https (SSL) both. 
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
     }
