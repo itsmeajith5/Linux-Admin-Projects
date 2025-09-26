@@ -8,6 +8,21 @@ Use NGINX as a reverse proxy + load balancer
 Secure the app with HTTPS (self-signed certificate)
 
 -----------------------------------------------------
+STEP 0
+-------
+SET AS REVERSE PROXY
+server {
+    listen 80;
+    server_name localhost;
+
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+
+
 STEP 1
 -------
 INSTALL NGNIX. START AND ENABLE
