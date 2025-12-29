@@ -5,3 +5,7 @@ https://docs.google.com/document/d/1hzFQIs7uqfN3DRwA7rXoUZlXwFHDRI6oNZj_IPwKuso/
 
 Other Notes
 https://docs.google.com/document/d/1X43Db51meclTS_7DP2AqmeZHqM73IcUxYzHJ_OXtILA/edit?usp=drivesdk
+
+
+Books
+https://drive.google.com/drive/folders/1IIWtDXBLtSRkRDA_sID1x4VREWr3qFxa
